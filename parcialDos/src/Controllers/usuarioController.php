@@ -10,6 +10,7 @@ use App\Modelos\Usuario;
 
 class UsuarioController
 {
+    //Punto 1
     public function addOne(Request $request, Response $response) 
     {
         $nuevoUsuario = new Usuario;
@@ -18,20 +19,18 @@ class UsuarioController
         $nuevoUsuario->email = strtoupper($request->getParsedBody()['email']);
         $nuevoUsuario->tipo = strtoupper($request->getParsedBody()['tipo']);
         $nuevoUsuario->clave = strtoupper($request->getParsedBody()['clave']);
-
         if($nuevoUsuario->save())
         {
-            $respuesta = "Guardado en la base de datos correcto";
-        }
-        
-
+            $respuesta = "Usuario guardado en la base de datos correctamente!";
+        }        
         $response->getBody()->write(json_encode($respuesta));
+
         return $response;
     }
 
+    //Punto 2
     public function loginUsuario(Request $request,Response $response)
-    {
-        
+    {        
         $mail = strtoupper($request->getParsedBody()['email']);
         $clave = strtoupper($request->getParsedBody()['clave']);
         $loginValido = self::verificarUsuario($clave,$mail);
@@ -42,20 +41,19 @@ class UsuarioController
         }
         else
         {
-            $response->getBody()->write('Clave o mail no registrados');
+            $response->getBody()->write('La clave o el mail no estan registrados en la base de datos!');
         }
         
         return $response;
     }
 
-
+    //Verificadores
     public static function verificarUsuario($clave,$mail)
-    {
-        
+    {        
         $usuario = Usuario::where('clave', $clave)->where('email',$mail)->first();
-        $payload = array();
-        
+        $payload = array();        
         $encodeCorrecto = false;
+
         if($usuario != null)
         { 
             $payload = array(
@@ -68,16 +66,16 @@ class UsuarioController
         }
         else
         {
-            echo 'Primero debe cargar usuarios';
+            echo 'Es necesario primero cargar usuarios!';
         }
         
         return $encodeCorrecto;
     }
 
-    //VERIFICA PERMISOS
     public static function PermitirPermisos($token,$tipo)
     {
         $retorno = false;
+
         try {
             $payload = JWT::decode($token, "segundo-parcial", array('HS256'));
             
@@ -90,16 +88,14 @@ class UsuarioController
         } catch (\Throwable $th) {
             echo 'Excepcion:' . $th->getMessage();
         }
+
         return $retorno;
     }
 
-    //OBTENER EL LEGAJO
     public static function ObtenerLegajoToken($token)
     {
-        //$retorno = false;
         try {
             $payload = JWT::decode($token, "segundo-parcial", array('HS256'));
-            //var_dump($payload);
             foreach ($payload as $key => $value) 
             {
                 if ($key == 'legajo') 
@@ -111,17 +107,12 @@ class UsuarioController
         } catch (\Throwable $th) {
             echo 'Excepcion:' . $th->getMessage();
         }
-        //return $retorno;
     }
 
-
-    //OBTENER TIPO
     public static function ObtenerTipoToken($token)
     {
-        //$retorno = false;
         try {
             $payload = JWT::decode($token, "segundo-parcial", array('HS256'));
-            //var_dump($payload);
             foreach ($payload as $key => $value) 
             {
                 if ($key == 'tipo') 
@@ -133,6 +124,5 @@ class UsuarioController
         } catch (\Throwable $th) {
             echo 'Excepcion:' . $th->getMessage();
         }
-        //return $retorno;
     }
 }

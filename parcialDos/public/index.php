@@ -9,7 +9,6 @@ use App\Middlewares\AuthMiddlewareAdmin;
 use App\Middlewares\AuthMiddlewareAlumno;
 use App\Middlewares\AuthMiddlewareProfesor;
 use App\Middlewares\AuthMiddlewareVarios;
-
 //use App\Controllers\AlumnoController;
 use App\Controllers\UsuarioController;
 use App\Controllers\MateriaController;
@@ -19,15 +18,15 @@ use App\Modelos\Alumno;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-
-
 $app = AppFactory::create();
 $app->setBasePath('BE/Parcial/SP_Torretta_Pablo/parcialDos/public'); 
 new Database;
-
 $app->add(new JsonMiddleware);
 
+//Punto 1
 $app->post('/users',UsuarioController::class.":addOne");
+
+//Punto 2
 $app->post('/login',UsuarioController::class.":loginUsuario");
 
 
@@ -35,14 +34,17 @@ $app->group('/notas',function(RouteCollectorProxy $group){
     $group->put('/{idMateria}',AlumnoMateriaController::class.":asignarNota")->add(new AuthMiddlewareProfesor);
     $group->get('/{idMateria}',AlumnoMateriaController::class.":verNotasMateria")->add(new AuthMiddlewareVarios);
 });
+
+//Punto 3 y 7
 $app->group('/materia',function(RouteCollectorProxy $group){
-    
+    //Punto 3
     $group->post('[/]',MateriaController::class.":addOne")->add(new AuthMiddlewareAdmin);
     $group->get('[/]',MateriaController::class.":verTodas")->add(new AuthMiddlewareVarios);
 });
 
+//Punto 4 y 
 $app->group('/inscripcion',function(RouteCollectorProxy $group){
-    
+    //Punto 4
     $group->post('/{idMateria}',MateriaController::class.":inscripcion")->add(new AuthMiddlewareAlumno);
     $group->get('/{idMateria}',AlumnoMateriaController::class.":inscripcionAlumno")->add(new AuthMiddlewareVarios);
 });

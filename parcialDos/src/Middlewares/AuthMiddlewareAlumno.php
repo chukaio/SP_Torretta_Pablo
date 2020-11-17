@@ -15,7 +15,7 @@ class AuthMiddlewareAlumno
         if (!UsuarioController::PermitirPermisos($token,'ALUMNO'))
         {
             $response = new Response();
-            $response->getBody()->write("Usuario sin permiso");
+            $response->getBody()->write("El usuario no posee permisos!");
 
             return $response->withStatus(403);
         } else {

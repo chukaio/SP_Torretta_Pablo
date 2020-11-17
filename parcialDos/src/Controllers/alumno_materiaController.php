@@ -23,9 +23,7 @@ class AlumnoMateriaController
         join('alumnos', 'alumnos.id', '=', 'alumnos_materias.id_alumno')
         ->join('materias', 'materias.id', '=', 'alumnos_materias.id_materia')
         ->select('alumnos_materias.id_alumno as Alumno', 'alumnos.nombre','materias.materia')
-        ->get();
-      
-        
+        ->get();            
         $response->getBody()->write(json_encode($respuesta));
         
         return $response;

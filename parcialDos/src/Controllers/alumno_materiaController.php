@@ -31,6 +31,7 @@ class AlumnoMateriaController
         return $response;
     }
 
+    //Punto 8
     public function verNotasMateria(Request $request, Response $response,$args)
     {
         $idMateria = $args['idMateria'];
@@ -38,8 +39,7 @@ class AlumnoMateriaController
         join('materias','materias.id', '=','alumnos_materias.id_materia')
         ->select('alumnos_materias.nota as Notas de la Materia','alumnos_materias.id_materia as Materia','materias.materia as Materia')
         ->where('alumnos_materias.id_materia','=',$idMateria)
-        ->get();
-       
+        ->get();       
         $response->getBody()->write(json_encode($respuesta));
         
         return $response;

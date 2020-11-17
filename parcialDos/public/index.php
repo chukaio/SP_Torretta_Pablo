@@ -29,8 +29,9 @@ $app->post('/users',UsuarioController::class.":addOne");
 //Punto 2
 $app->post('/login',UsuarioController::class.":loginUsuario");
 
-
+//Punto 5 y 
 $app->group('/notas',function(RouteCollectorProxy $group){
+    //Punto 5
     $group->put('/{idMateria}',AlumnoMateriaController::class.":asignarNota")->add(new AuthMiddlewareProfesor);
     $group->get('/{idMateria}',AlumnoMateriaController::class.":verNotasMateria")->add(new AuthMiddlewareVarios);
 });
@@ -42,10 +43,11 @@ $app->group('/materia',function(RouteCollectorProxy $group){
     $group->get('[/]',MateriaController::class.":verTodas")->add(new AuthMiddlewareVarios);
 });
 
-//Punto 4 y 
+//Punto 4 y 6
 $app->group('/inscripcion',function(RouteCollectorProxy $group){
     //Punto 4
     $group->post('/{idMateria}',MateriaController::class.":inscripcion")->add(new AuthMiddlewareAlumno);
+    //Punto 6
     $group->get('/{idMateria}',AlumnoMateriaController::class.":inscripcionAlumno")->add(new AuthMiddlewareVarios);
 });
 

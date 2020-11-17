@@ -5,9 +5,9 @@ use App\Modelos\Alumno_Materia;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-
 class AlumnoMateriaController
 {
+    //Punto 5
     public function asignarNota(Request $request,Response $response,$args)
     {
         $idAlumno = $request->getParsedBody()['idAlumno'];
@@ -16,7 +16,6 @@ class AlumnoMateriaController
 
         $response->getBody()->write(json_encode($respuesta));
     }
-
 
     public function verTodas(Request $request,Response $response)
     {
@@ -46,12 +45,11 @@ class AlumnoMateriaController
         return $response;
     }
 
+    //Punto 6
     public function inscripcionAlumno(Request $request,Response $response,$args)
     {
         $token = $request->getHeaderLine('token');
-        //$idAlumno = UsuarioController::ObtenerLegajoToken($token);
         $tipo = UsuarioController::ObtenerTipoToken($token);
-        //$idMateria = $args['idMateria'];
 
         if($tipo == "PROFESOR" || $tipo == "ADMIN")
         {
@@ -59,39 +57,10 @@ class AlumnoMateriaController
             join('usuarios', 'usuarios.id', '=', 'alumnos_materias.id_alumno')
             ->join('materias', 'materias.id', '=', 'alumnos_materias.id_materia')
             ->select('materias.materia as Incriptos a la Materia','usuarios.nombre as Nombre')
-            ->get();
-            
-        }
-        /*switch ($tipo) 
-        {
-            case 'alumno':
-                $respuesta = Alumno_Materia::
-                join('alumnos', 'alumnos.id', '=', 'alumnos_materias.id_alumno')
-                ->join('materias', 'materias.id', '=', 'alumnos_materias.id_materia')
-                ->where('alumnos_materias.id_alumno','=',$idAlumno)
-                ->select('alumnos.nombre as Nombre','materias.materia as Materia')
-                ->get();
-                
-                break;
-            case 'admin':
-                $respuesta = Alumno_Materia::
-                join('alumnos', 'alumnos.id', '=', 'alumnos_materias.id_alumno')
-                ->join('materias', 'materias.id', '=', 'alumnos_materias.id_materia')
-                ->select('alumnos_materias.id_alumno as Legajo', 'alumnos.nombre as Nombre','materias.materia as Materia')
-                ->get();
-                break;
-            case 'profesor':
-                $respuesta = 'es profesor';
-                break;
-            
-            default:
-                $respuesta = "Usuario invalido";
-                break;
-        }*/
+            ->get();            
+        }        
         $response->getBody()->write(json_encode($respuesta));
         
         return $response;
-    }
-
-    
+    }    
 }

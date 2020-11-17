@@ -22,7 +22,7 @@ require __DIR__ . '/../vendor/autoload.php';
 
 
 $app = AppFactory::create();
-$app->setBasePath('/BE/Parcial/SP/parcialDos/public');
+$app->setBasePath('BE/Parcial/SP_Torretta_Pablo/parcialDos/public'); 
 new Database;
 
 $app->add(new JsonMiddleware);

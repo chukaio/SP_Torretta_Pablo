@@ -20,6 +20,7 @@ require __DIR__ . '/../vendor/autoload.php';
 
 $app = AppFactory::create();
 $app->setBasePath('BE/Parcial/SP_Torretta_Pablo/parcialDos/public'); 
+//$app->addBodyParsingMiddleware();
 new Database;
 $app->add(new JsonMiddleware);
 
@@ -40,6 +41,7 @@ $app->group('/notas',function(RouteCollectorProxy $group){
 $app->group('/materia',function(RouteCollectorProxy $group){
     //Punto 3
     $group->post('[/]',MateriaController::class.":addOne")->add(new AuthMiddlewareAdmin);
+    //Punto 7
     $group->get('[/]',MateriaController::class.":verTodas")->add(new AuthMiddlewareVarios);
 });
 

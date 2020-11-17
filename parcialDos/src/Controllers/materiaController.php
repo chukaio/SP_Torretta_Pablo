@@ -63,6 +63,7 @@ class MateriaController
         return $hayCupo;
     }
 
+    //Punto 7
     public function verTodas(Request $request, Response $response)
     {
         $respuesta = Materia::get();
